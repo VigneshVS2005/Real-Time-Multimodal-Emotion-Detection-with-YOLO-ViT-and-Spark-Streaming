@@ -15,18 +15,24 @@ A production‑style, big‑data pipeline that:
 - Spark Structured Streaming with event‑time windows and stateful aggregations.
 - Medallion design: Bronze (raw), Silver (cleaned), Gold (windowed KPIs).
 
-Repo layout
-```
 edge/
-  laptop_producer_file.py       # YOLO realtime producer (IDs/audio/JSON)
-  laptop_produce_file.py        # ViT realtime producer (Grad-CAM/audio/JSON)
-  train_yolo.py                 # YOLO training
-  emotion_data.yaml             # YOLO dataset config
+  yolo_opencv_emotion_detection.py # YOLO realtime producer (IDs/audio/JSON)
+  vit_opencv_emotion_detection.py  # ViT realtime producer (Grad-CAM/audio/JSON)
+  train_yolo.py                    # YOLO training
+  emotion_data.yaml                # YOLO dataset config
 
 spark/
-  xyz.scala                     # Scala preprocessing → Parquet on HDFS
-  spark_vit_yolo_streaming.py   # Streaming → Bronze/Silver/Gold
+  preprocessing.scala              # Scala preprocessing → Parquet on HDFS
+  spark_vit_yolo_streaming.py      # Streaming → Bronze/Silver/Gold
 ```
+
+## 📦 Prerequisites & Environment Setup
+
+Install edge and streaming Python dependencies:
+```bash
+pip install -r requirements.txt
+```
+
 
 ## 📦 Data: 9 Facial Expressions (Kaggle).
 Classes: angry, disgust, fear, happy, neutral, sad, surprise, (and your set’s two more). Organize as train/valid/test with images/labels. The Scala job reads image bytes + labels, sets 224×224×3 meta, and writes Parquet shards to HDFS for parallel IO.
